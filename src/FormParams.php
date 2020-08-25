@@ -90,7 +90,17 @@ class FormParams
 
 	public static function selectParams() 
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'value',
+                'name',
+                'id',
+            ],
+            'optional' => [
+            
+            ]
+        ];
     }
     
 	public static function checkboxParams()

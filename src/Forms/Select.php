@@ -1,59 +1,127 @@
 <?php
 
-namespace Salabun\FormBuilder\Forms\Select;
-
 namespace Salabun\Forms;
 
 use Salabun\CodeWriter;
 use Salabun\FormParams;
 use Salabun\FormBuilder;
+use Salabun\FormBuilderErrors;
 
 /**
  *  Select:
  */
 class Select
-{
+{      
     /**
      *  Вхідні параметри:
      */
-    public $formParam = [];
+    public $incomingParams = [];
+
+    /**
+     *  Масив помилок, які виникли під час генерації:
+     */
+    public $errors = [];
     
     /**
-     *  Чи виводити на екран помилки:
-     */
-    public  $debug = false;
+     *  Параметри для Blade:
+     */ 
+    public $version = 4;
+    public $prefix = 'control_panel';
+    public $templatesFolder = 'templates';
     
+    /**
+     *  Конструктор:
+     */
     public function __construct($param = []) 
 	{
+        $this->incomingParams = $param;
+        $this->checkIncomingParams();
         
-        $this->formParam = $param;
+        
         $this->defaultParams = FormParams::selectParams();
-        
-        $this->version = 4;
-        $this->prefix = 'control_panel';
-        $this->templatesFolder = 'templates';
+
         $this->params = [];
-        
-        
-        
+              
+    }
+    
+    /**
+     *  Перевірка вхідних параметрів:
+     */
+	public function checkIncomingParams()
+	{
+        $this->checkCreatingMethod();
+        $this->checkDebug();
+
+       
+        var_dump($this);
+        die();
+    }
+    
+    /**
+     *  Перевіряю параметри способу генерації:
+     */
+	public function checkCreatingMethod()
+	{
+        if(isset($this->incomingParams['creating_method'])) {
+            if(!array_key_exists($this->incomingParams['creating_method'], FormBuilder::$creatingMethods)) {
+                $this->incomingParams['creating_method'] = 'HTML';
+                $this->errors[22] = FormBuilderErrors::error(22); 
+            }
+        } else {
+            $this->incomingParams['creating_method'] = 'HTML';
+            $this->errors[21] = FormBuilderErrors::error(21);
+        }  
+    }
+    
+    /**
+     *  Перевіряю параметри дебагу:
+     */
+	public function checkDebug()
+	{
+        if(isset($this->incomingParams['debug'])) {
+            if($this->incomingParams['debug'] !== true) {
+                $this->incomingParams['debug'] = true;
+                $this->errors[10] = FormBuilderErrors::error(10); 
+            }
+        } else {
+            $this->incomingParams['debug'] = false;
+        }  
     }
 
     /**
-     *  Версія форм:
+     *  
      */
 	public function toString()
 	{
-        if($this->formParam['creating_method'] == 'HTML') {
+        if($this->incomingParams['creating_method'] == 'HTML') {
             return $this->getHTML();
-        } else if($this->formParam['creating_method'] == 'Blade') {
+        } else if($this->incomingParams['creating_method'] == 'Blade') {
             return $this->getBlade();
-        } else if($this->formParam['creating_method'] == 'PHP') {
+        } else if($this->incomingParams['creating_method'] == 'PHP') {
             return $this->getPHP();
         } else {
-            return 'Невірно вказаний параметр creating_method';
+            return 'Невірно вказаний параметр creating_method! Можливі значення HTML, PHP, Blade.';
         }
     }
 
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      *  Версія форм:
      */

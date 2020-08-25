@@ -3,6 +3,7 @@
 namespace Salabun;
 
 use Salabun\Forms;
+use Salabun\FormBuilderErrors;
 
 /**
  *  Цей пакет будує HTML форми.
@@ -10,9 +11,23 @@ use Salabun\Forms;
 
 class FormBuilder
 {
-	public function __construct() 
+    /**
+     *  Чи виводити на екран помилки:
+     */
+    public $debug = false;
+    
+    /**
+     *  Доступні методи генерації:
+     */
+    static $creatingMethods = [
+        'HTML' => 'getHTML',
+        'Blade' => 'getBlade',
+        'PHP' => 'getPHP',
+    ];
+    
+    public function __construct() 
 	{
-        $method = 'getHTML';
+
 	}
     
 	public static function all() 
@@ -20,21 +35,21 @@ class FormBuilder
         return new FormParams;
 	}
 
+    
     /**
      *  Генерація hidden:
      */
-	public static function hidden($param = []) 
+	public static function hidden($params = []) 
 	{
-        $formParams = new Forms\Hidden;
-        return [$formParams, $param ];
+        // TODO
 	}
     
     /**
      *  Генерація select:
      */
-	public static function select($param = []) 
+	public static function select($params = []) 
 	{
-        return (new Forms\Select($param))->toString();
+        return (new Forms\Select($params))->toString();
 	}
     
     
