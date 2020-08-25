@@ -92,13 +92,14 @@ class FormParams
 	{
         return 
         [
-            'required' => [
-                'value',
-                'name',
-                'id',
+            "required" => [
+                "value" => "",
+                "name" => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
             ],
-            'optional' => [
-            
+            "optional" => [
+                "class" => "form-control",
+                "required" => false
             ]
         ];
     }

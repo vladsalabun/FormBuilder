@@ -12,6 +12,17 @@ use Salabun\FormBuilderErrors;
  */
 class Select
 {      
+    
+    /**
+     *  Обов'язкові параметри:
+     */
+    public $requiredParams = [];
+    
+    /**
+     *  Додаткові параметри:
+     */
+    public $optionalParams = [];
+    
     /**
      *  Вхідні параметри:
      */
@@ -34,11 +45,15 @@ class Select
      */
     public function __construct($param = []) 
 	{
+        // Дізнаюсь дефолтні параметри:
+        $this->requiredParams = FormParams::selectParams()['required'];
+        $this->optionalParams = FormParams::selectParams()['optional'];
+        
         $this->incomingParams = $param;
         $this->checkIncomingParams();
         
         
-        $this->defaultParams = FormParams::selectParams();
+       
 
         $this->params = [];
               
@@ -51,6 +66,7 @@ class Select
 	{
         $this->checkCreatingMethod();
         $this->checkDebug();
+        $this->checkUnnecessaryParams();
 
        
         var_dump($this);
@@ -89,6 +105,50 @@ class Select
     }
 
     /**
+     *  Перевіряю зайві параметри:
+     */
+	public function checkUnnecessaryParams()
+	{        
+        // Копіюю вхідні параметри:
+        $tmpParams = $this->incomingParams;
+        
+        // Збираю всі необхідні параметри в один масив:
+        $allParams = [
+            'creating_method' => null,
+            'debug' => null
+        ];
+        
+        $allParams = array_merge($allParams, $this->requiredParams);
+        $allParams = array_merge($allParams, $this->optionalParams);
+
+        // Видаляю необхідні параметри:
+        foreach($tmpParams as $param => $value) {
+            
+            if(array_key_exists($param, $allParams)) {
+                unset($tmpParams[$param]);
+            }
+
+        }
+        
+        // Повідомляю про зайві параметри:
+        foreach($tmpParams as $param => $value) {
+            if(is_int($param)) {
+                $this->errors[30][] = FormBuilderErrors::error(30) . $value;
+            } else {
+                $this->errors[30][] = FormBuilderErrors::error(30) . $param;
+            }
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
      *  
      */
 	public function toString()
@@ -105,22 +165,6 @@ class Select
     }
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     /**
      *  Версія форм:
