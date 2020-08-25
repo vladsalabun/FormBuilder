@@ -15,25 +15,25 @@ class FormParams
          */
         $this->formTypes = 
         [
-            'hidden' => FormParams::hidden(),
-            'text',
-            'number',
-            'textarea',
-            'radio',
-            'select',
-            'checkbox',
-            'youtube_video',
-            'datepicker',
-            'tempus_datetimepicker',
-            'file',
-            'files',
-            'image',
-            'images',
+            'hidden' => FormParams::hiddenParams(),
+            'text' => FormParams::textParams(),
+            'number' => FormParams::numberParams(),
+            'textarea' => FormParams::textareaParams(),
+            'radio' => FormParams::radioParams(),
+            'select' => FormParams::selectParams(),
+            'checkbox' => FormParams::checkboxParams(),
+            'youtube_video' => FormParams::youtube_videoParams(),
+            'datepicker' => FormParams::datepickerParams(),
+            'tempus_datetimepicker' => FormParams::tempus_datetimepickerParams(),
+            'file' => FormParams::fileParams(),
+            'files' => FormParams::filesParams(),
+            'image' => FormParams::imageParams(),
+            'images' => FormParams::imagesParams(),
         ];
         
         // TODO: виписати унікальні назви параметрів та їхніх дефолтних значень, та створити для них поля в таблиці генератора
         
-        $this->formParams = [];
+        $this->defaultParams = [];
         
         
     }
@@ -43,7 +43,7 @@ class FormParams
         return new FormParams;
     }
     
-	public static function hidden() 
+	public static function hiddenParams() 
 	{
         return 
         [
@@ -58,7 +58,7 @@ class FormParams
         ];
     }
     
-	public static function text() 
+	public static function textParams() 
 	{
         return 
         [
@@ -73,4 +73,65 @@ class FormParams
         ];
     }
 
+	public static function numberParams() 
+	{
+        return [];
+    }
+    
+	public static function textareaParams() 
+	{
+        return [];
+    }
+
+	public static function radioParams() 
+	{
+        return [];
+    }
+
+	public static function selectParams() 
+	{
+        return [];
+    }
+    
+	public static function checkboxParams()
+	{
+        return [];
+    }
+    
+	public static function youtube_videoParams()
+	{
+        return [];
+    } 
+        
+	public static function datepickerParams()
+	{
+        return [];
+    } 
+    
+	public static function tempus_datetimepickerParams()
+	{
+        return [];
+    }
+    
+	public static function fileParams()
+	{
+        return [];
+    }
+    
+	public static function filesParams()
+	{
+        return [];
+    }
+            
+	public static function imageParams()
+	{
+        return [];
+    }  
+       
+	public static function imagesParams()
+	{
+        return [];
+    }    
+    
+    
 }
