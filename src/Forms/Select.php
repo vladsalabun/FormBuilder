@@ -50,13 +50,7 @@ class Select
         $this->optionalParams = FormParams::selectParams()['optional'];
         
         $this->incomingParams = $param;
-        $this->checkIncomingParams();
-        
-        
-       
-
-        $this->params = [];
-              
+        $this->checkIncomingParams();   
     }
     
     /**
@@ -79,11 +73,11 @@ class Select
         if(isset($this->incomingParams['creating_method'])) {
             if(!array_key_exists($this->incomingParams['creating_method'], FormBuilder::$creatingMethods)) {
                 $this->incomingParams['creating_method'] = 'HTML';
-                $this->errors[22] = FormBuilderErrors::error(22); 
+                $this->errors[22][] = FormBuilderErrors::error(22); 
             }
         } else {
             $this->incomingParams['creating_method'] = 'HTML';
-            $this->errors[21] = FormBuilderErrors::error(21);
+            $this->errors[21][] = FormBuilderErrors::error(21);
         }  
     }
     
@@ -95,7 +89,7 @@ class Select
         if(isset($this->incomingParams['debug'])) {
             if($this->incomingParams['debug'] !== true) {
                 $this->incomingParams['debug'] = true;
-                $this->errors[10] = FormBuilderErrors::error(10); 
+                $this->errors[10][] = FormBuilderErrors::error(10); 
             }
         } else {
             $this->incomingParams['debug'] = false;
@@ -283,63 +277,61 @@ class Select
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     *  Дебаг:
+     */
+    public function debug() 
+	{
+        // Якщо включений дебаг:
+        if($this->incomingParams['debug'] == true) {
+            
+            // Якщо помилки є:
+            if(count($this->errors) > 0) {
+                
+                // Публікую повідомлення про помилки під час генерації форми:
+                $this
+                    ->codeWriter
+                    ->lines([
+                        '<!--- DEBUG: --->',
+                        '<!---'
+                    ]);
+                
+                foreach($this->errors as $errorCode => $errorMessage) {
+
+                    // Помилки завжди зберігаються в масив:
+                    if(is_array($errorMessage)) {
+                        
+                        foreach($errorMessage as $errorSubMessage) {
+                            $this
+                                ->codeWriter
+                                ->lines([
+                                    '[' . $errorCode . '] ' . $errorSubMessage . ' ',
+                                ]);
+                        }
+                        
+                    } else {
+                        // Если про всяк випадок ще виводжу строку:
+                        $this
+                            ->codeWriter
+                            ->line($errorMessage); 
+                    }
+                  
+                }
+                
+                $this
+                    ->codeWriter
+                    ->lines([
+                        '--->',
+                        '<!--- /DEBUG --->'
+                    ]);
+            }
+
+        }  
+    }
     
     /**
-     *  
+     *  Генерація HTML коду для копіювання і вставки:
      */
-	public function toString()
-	{
-        if($this->incomingParams['creating_method'] == 'HTML') {
-            return $this->getHTML();
-        } else if($this->incomingParams['creating_method'] == 'Blade') {
-            return $this->getBlade();
-        } else if($this->incomingParams['creating_method'] == 'PHP') {
-            return $this->getPHP();
-        } else {
-            return 'Невірно вказаний параметр creating_method! Можливі значення HTML, PHP, Blade.';
-        }
-    }
-
-
-    
-    /**
-     *  Версія форм:
-     */
-	public function version($string) 
-	{
-        $this->version = $string;
-        return $this;
-    }
-    
-	public function prefix($string) 
-	{
-        $this->prefix = $string;
-        return $this;
-    }
-    
-	public function templatesFolder($string) 
-	{
-        $this->templatesFolder = $string;
-        return $this;
-    }
-    
-    
-
-    
     public function getHTML() 
 	{
         $this->codeWriter = new CodeWriter;
@@ -389,13 +381,19 @@ class Select
             ->s(0)
             ->lines([
                 '</div>',
-                '<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->'
             ]);
-                     
+            
+            // Дебаг:
+            $this->debug();
+
+            $this
+                ->codeWriter
+                ->line('<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
 
         return trim($this->codeWriter->getCode());
     }
-    
+
+   
     public function getBlade() 
 	{
         $this->codeWriter = new CodeWriter;
@@ -416,6 +414,26 @@ class Select
             ->line('php select');
 
         return trim($this->codeWriter->getCode());
+    }
+    
+    /**
+     *  Завершальний метод, який переводить об'єкт у строку для виводу на екран: 
+     */
+	public function toString()
+	{
+        // Якщо будівельник вміє генерувати обраним методом:
+        if(isset(FormBuilder::$creatingMethods[$this->incomingParams['creating_method']])) {
+            
+            // Викликаю обраний метод:
+            $method = FormBuilder::$creatingMethods[$this->incomingParams['creating_method']];
+            return $this->$method();
+            
+        } else {
+            
+            // Інакше генерую HTML:
+            return $this->getHTML();
+            
+        }
     }
     
 }
