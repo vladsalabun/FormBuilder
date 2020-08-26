@@ -67,6 +67,7 @@ class Select
         $this->checkCreatingMethod();
         $this->checkDebug();
         $this->checkUnnecessaryParams();
+        $this->checkRequiredParams();
 
        
         var_dump($this);
@@ -121,7 +122,7 @@ class Select
         $allParams = array_merge($allParams, $this->requiredParams);
         $allParams = array_merge($allParams, $this->optionalParams);
 
-        // Видаляю необхідні параметри:
+        // Видаляю необхідні параметри, щоб залишити тільки зайві:
         foreach($tmpParams as $param => $value) {
             
             if(array_key_exists($param, $allParams)) {
@@ -132,17 +133,46 @@ class Select
         
         // Повідомляю про зайві параметри:
         foreach($tmpParams as $param => $value) {
-            if(is_int($param)) {
-                $this->errors[30][] = FormBuilderErrors::error(30) . $value;
-            } else {
+            if(is_string($param)) {
                 $this->errors[30][] = FormBuilderErrors::error(30) . $param;
+            } else {
+                if(is_string($value)) {
+                    $this->errors[30][] = FormBuilderErrors::error(30) . $value;
+                } else {
+                    if(is_int($param)) {
+                        $this->errors[30][] = FormBuilderErrors::error(30) . $param;
+                    } else { 
+                        $this->errors[30][] = FormBuilderErrors::error(30) . ' (не строка)';
+                    }
+                }
             }
+            // Видаляю зайві параметри:
+            unset($this->incomingParams[$param]);
         }
-        
     }
     
-    
-    
+    /**
+     *  Перевіряю обов'язкові параметри:
+     */
+	public function checkRequiredParams()
+	{
+        foreach($this->requiredParams as $param => $value) {
+            
+            // Якщо обов'язковий параметр не вказано:
+            if(!array_key_exists($param, $this->incomingParams)) {
+                
+                // Встановлюю дефолтне значення:
+                $this->incomingParams[$param] = $value;
+                $this->errors[31][] = FormBuilderErrors::error(31) . $param;
+                
+            } else {
+                
+                // Якщо є, то активую метод:
+                $this->incomingParams[$param] = $this->$param($this->incomingParams[$param]);
+                
+            }
+        }
+    }
     
     
     
@@ -187,56 +217,20 @@ class Select
         return $this;
     }
     
-    /**
-     *  Параметри поля.
-     *  Допустимі додаю, зайві відхиляю.
-     */
-	public function params($array) 
-	{
-        
-        foreach($this->defaultParams['required'] as $requiredParam) {
-            if(array_key_exists($requiredParam, $array)) {
-                $this->params[$requiredParam] = $array[$requiredParam];
-            } else {
-                $this->params[$requiredParam] = $this->$requiredParam();
-            }
-        }
-        
-        foreach($this->defaultParams['optional'] as $requiredParam) {
-            if(array_key_exists($requiredParam, $array)) {
-                $this->params[$requiredParam] = $array[$requiredParam];
-            }
-        }
-        
-        //$this->validate();
-        
-        return $this;
-    }
-    
-    public function validate() 
-	{
-        foreach($this->defaultParams['required'] as $requiredParam) {
-            if($this->params[$requiredParam] == null) {
-                $this->params[$requiredParam] = $this->$requiredParam();
-            }
-        }
-        //return $this;
-    }
     
     public function id() 
 	{
+        /*
         if($this->params['name'] != null) {
             return 'column_' . $this->params['name'];
         } else {
             return 'column_' . rand(1111, 9999);
-        }
+        }*/
     }
 
-    public function name() 
+    public function name($value) 
 	{
-        if($this->params['name'] == null) {
-            return 'field_' . rand(1111, 9999);
-        }
+        return $value;
     }
     
     public function value() 
