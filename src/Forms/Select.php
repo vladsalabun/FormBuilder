@@ -195,8 +195,21 @@ class Select
         if(is_string($value)) {
             return $value;
         } else {
-            $this->errors[100][] = FormBuilderErrors::error(100) . ' (не строка)';
+            $this->errors[101][] = FormBuilderErrors::error(101) . ' (не строка)';
             return 'column_' . $this->requiredParams['name'];
+        }
+    }
+    
+    /**
+     *  Перевірка параметру selected_value:
+     */
+    public function selected_value($value) 
+	{
+        if(is_string($value) or is_int($value)) {
+            return $value;
+        } else {
+            $this->errors[102][] = FormBuilderErrors::error(102);
+            return null;
         }
     }
     
@@ -242,12 +255,7 @@ class Select
     }
     
     
-    public function value() 
-	{
-        if($this->params['value'] == null) {
-            return '';
-        }
-    }
+
     
     public function getHTML() 
 	{

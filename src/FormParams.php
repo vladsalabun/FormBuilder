@@ -93,7 +93,7 @@ class FormParams
         return 
         [
             "required" => [
-                "value" => "",
+                "selected_value" => null,
                 "name" => "name_" . rand(9999,99999),
                 "id" => "id_" . rand(9999,99999),
             ],
