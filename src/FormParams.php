@@ -7,7 +7,17 @@ namespace Salabun;
  */
 class FormParams
 {
-	public function __construct() 
+
+    /**
+     *  Класи для блоків форм:
+     */
+    static $formclasses = [
+        'form-label' => 'form-label',
+        'form-content' => 'form-content',
+        'form-error' => 'form-error',
+    ];   
+    
+    public function __construct() 
 	{
         /**
          *  Це перелік типів форм, які я можу генерувати
@@ -20,7 +30,7 @@ class FormParams
             'number' => FormParams::numberParams(),
             'textarea' => FormParams::textareaParams(),
             'radio' => FormParams::radioParams(),
-            'select' => FormParams::selectParams(),
+            'select' => FormParams::selectParams(), // ГОТОВО!
             'checkbox' => FormParams::checkboxParams(),
             'youtube_video' => FormParams::youtube_videoParams(),
             'datepicker' => FormParams::datepickerParams(),
@@ -93,9 +103,10 @@ class FormParams
         return 
         [
             "required" => [
-                "selected_value" => null,
                 "name" => "name_" . rand(9999,99999),
                 "id" => "id_" . rand(9999,99999),
+                "selected_value" => null,
+                "values" => [],
             ],
             "optional" => [
                 "label" => "Select",

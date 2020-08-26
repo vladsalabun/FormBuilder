@@ -69,10 +69,6 @@ class Select
         $this->checkUnnecessaryParams();
         $this->checkRequiredParams();
         $this->checkOptionalParams();
-
-       
-        var_dump($this);
-        die();
     }
     
     /**
@@ -236,6 +232,19 @@ class Select
     }
     
     /**
+     *  Перевірка параметру values:
+     */
+    public function values($value) 
+	{
+        if(is_array($value)) {
+            return $value;
+        } else {
+            $this->errors[106][] = FormBuilderErrors::error(106);
+            return $this->requiredParams['values'];
+        }
+    }
+    
+    /**
      *  Перевірка параметру label:
      */
     public function label($value) 
@@ -273,6 +282,8 @@ class Select
             return false;
         }
     }
+    
+    
     
     
     
@@ -336,18 +347,51 @@ class Select
         $this
             ->codeWriter
             ->lines([
-'<!---- SELECT FIELD: form_type ---->
-<div class="form-group">
-    <label class="form-label"></label>
-                     
-    <select name="form_type" id="column_form_type" class="form-control" default-selected-value="">
-        <option value="hidden">hidden</option>
-    </select>
+                '<!---- SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->',
+                '<div class="' . FormParams::$formclasses['form-label'] . '">' . $this->incomingParams['label'] . '</div>',
+                '<div class="' . FormParams::$formclasses['form-content'] . '">',
+            ])
+            ->defaultSpaces(4)
+            ->line(
+                '<select name="' . $this->incomingParams['name'] . '" id="' . $this->incomingParams['id'] . '" class="' . $this->incomingParams['class'] . '" default-selected-value="' . $this->incomingParams['selected_value'] . '">'
+            );
+            
+            $this->codeWriter->s(4);
+            
+            // Варіанти вибору:
+            foreach($this->incomingParams['values'] as $value => $text) {
+                
+                if($this->incomingParams['selected_value'] == $value) {
+                    $this->codeWriter->line(
+                        '<option value="' . $value . '" selected>' . $text . '</option>'
+                    );  
+                } else {
+                    $this->codeWriter->line(
+                        '<option value="' . $value . '">' . $text . '</option>'
+                    );  
+                }
 
-    <small id="form_type_js_error" class="form-text text-danger" style="display: none;"></small>
-</div>
-<!---- /SELECT FIELD: form_type ---->'
-             ]);
+            }
+            
+            $this->codeWriter->s(0);
+
+            $this
+            ->codeWriter->line(
+                '</select>'
+            )
+            ->defaultSpaces(0)
+            ->lines([
+                '</div>',
+                '<div class="' . FormParams::$formclasses['form-error'] . '">',
+            ])
+            ->s(4)
+            ->line('<small id="form_type_js_error" class="form-text text-danger" style="display: none;"></small>')
+            ->s(0)
+            ->lines([
+                '</div>',
+                '<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->'
+            ]);
+                     
 
         return trim($this->codeWriter->getCode());
     }
