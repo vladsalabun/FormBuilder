@@ -11,10 +11,6 @@ use Salabun\FormBuilderErrors;
 
 class FormBuilder
 {
-    /**
-     *  Чи виводити на екран помилки:
-     */
-    public $debug = false;
     
     /**
      *  Доступні методи генерації:

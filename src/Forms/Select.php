@@ -268,12 +268,18 @@ class Select
      *  Перевірка параметру required:
      */
     public function required($value) 
-	{
+	{        
         if(is_bool($value)) {
             return $value;
         } else {
-            $this->errors[105][] = FormBuilderErrors::error(105);
-            return false;
+            if($value == 'true') {
+                return true;
+            } else if($value == 'false') {
+                return false;
+            } else {
+                $this->errors[105][] = FormBuilderErrors::error(105);
+                return false;
+            }
         }
     }
     
@@ -336,6 +342,16 @@ class Select
 	{
         $this->codeWriter = new CodeWriter;
         
+        // Всі параметри інпута:
+        $input = [
+            'select',
+            'name="' . $this->incomingParams['name'] . '"',
+            'id="' . $this->incomingParams['id'] . '"',
+            'class="' . $this->incomingParams['class'] . '"',
+            'default-selected-value="' . $this->incomingParams['selected_value'] . '"',
+            $this->incomingParams['required'] == true ? 'required' : ''
+        ];
+        
         $this
             ->codeWriter
             ->lines([
@@ -344,9 +360,7 @@ class Select
                 '<div class="' . FormParams::$formclasses['form-content'] . '">',
             ])
             ->defaultSpaces(4)
-            ->line(
-                '<select name="' . $this->incomingParams['name'] . '" id="' . $this->incomingParams['id'] . '" class="' . $this->incomingParams['class'] . '" default-selected-value="' . $this->incomingParams['selected_value'] . '">'
-            );
+            ->line('<'.implode($input, ' ').'>');
             
             $this->codeWriter->s(4);
             
