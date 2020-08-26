@@ -98,6 +98,7 @@ class FormParams
                 "id" => "id_" . rand(9999,99999),
             ],
             "optional" => [
+                "label" => "Select",
                 "class" => "form-control",
                 "required" => false
             ]

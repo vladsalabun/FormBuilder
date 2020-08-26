@@ -68,6 +68,7 @@ class Select
         $this->checkDebug();
         $this->checkUnnecessaryParams();
         $this->checkRequiredParams();
+        $this->checkOptionalParams();
 
        
         var_dump($this);
@@ -166,7 +167,6 @@ class Select
                 $this->errors[31][] = FormBuilderErrors::error(31) . $param;
                 
             } else {
-                var_dump('check ' . $param);
                 // Якщо є, то активую метод:
                 $this->incomingParams[$param] = $this->$param($this->incomingParams[$param]);
                 
@@ -174,6 +174,28 @@ class Select
         }
     }
     
+    /**
+     *  Перевіряю додаткові параметри:
+     */
+	public function checkOptionalParams()
+	{
+        foreach($this->optionalParams as $param => $value) {
+            
+            // Якщо обов'язковий параметр не вказано:
+            if(!array_key_exists($param, $this->incomingParams)) {
+                
+                // Встановлюю дефолтне значення:
+                $this->incomingParams[$param] = $value;
+                $this->errors[32][] = FormBuilderErrors::error(32) . $param;
+                
+            } else {
+                // Якщо є, то активую метод:
+                $this->incomingParams[$param] = $this->$param($this->incomingParams[$param]);
+                
+            }
+        }
+    }
+
     /**
      *  Перевірка параметру name:
      */
@@ -212,6 +234,56 @@ class Select
             return null;
         }
     }
+    
+    /**
+     *  Перевірка параметру label:
+     */
+    public function label($value) 
+	{
+        if(is_string($value) or is_int($value)) {
+            return $value;
+        } else {
+            $this->errors[103][] = FormBuilderErrors::error(103);
+            return null;
+        }
+    }
+    
+    /**
+     *  Перевірка параметру class:
+     */
+    public function class($value) 
+	{
+        if(is_string($value)) {
+            return $value;
+        } else {
+            $this->errors[104][] = FormBuilderErrors::error(104);
+            return null;
+        }
+    }
+    
+    /**
+     *  Перевірка параметру required:
+     */
+    public function required($value) 
+	{
+        if(is_bool($value)) {
+            return $value;
+        } else {
+            $this->errors[105][] = FormBuilderErrors::error(105);
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
