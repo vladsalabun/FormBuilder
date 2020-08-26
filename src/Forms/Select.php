@@ -166,7 +166,7 @@ class Select
                 $this->errors[31][] = FormBuilderErrors::error(31) . $param;
                 
             } else {
-                
+                var_dump('check ' . $param);
                 // Якщо є, то активую метод:
                 $this->incomingParams[$param] = $this->$param($this->incomingParams[$param]);
                 
@@ -174,7 +174,31 @@ class Select
         }
     }
     
+    /**
+     *  Перевірка параметру name:
+     */
+    public function name($value) 
+	{
+        if(is_string($value)) {
+            return $value;
+        } else {
+            $this->errors[100][] = FormBuilderErrors::error(100) . ' (не строка)';
+            return $this->requiredParams['name'];
+        }
+    }
     
+    /**
+     *  Перевірка параметру id:
+     */
+    public function id($value) 
+	{
+        if(is_string($value)) {
+            return $value;
+        } else {
+            $this->errors[100][] = FormBuilderErrors::error(100) . ' (не строка)';
+            return 'column_' . $this->requiredParams['name'];
+        }
+    }
     
     
     
@@ -217,21 +241,6 @@ class Select
         return $this;
     }
     
-    
-    public function id() 
-	{
-        /*
-        if($this->params['name'] != null) {
-            return 'column_' . $this->params['name'];
-        } else {
-            return 'column_' . rand(1111, 9999);
-        }*/
-    }
-
-    public function name($value) 
-	{
-        return $value;
-    }
     
     public function value() 
 	{
