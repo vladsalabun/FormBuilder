@@ -8,9 +8,9 @@ use Salabun\FormBuilder;
 use Salabun\FormBuilderErrors;
 
 /**
- *  Select:
+ *  Text:
  */
-class Select
+class Text
 {      
     
     /**
@@ -39,8 +39,8 @@ class Select
     public function __construct($param = []) 
 	{
         // Дізнаюсь дефолтні параметри:
-        $this->requiredParams = FormParams::selectParams()['required'];
-        $this->optionalParams = FormParams::selectParams()['optional'];
+        $this->requiredParams = FormParams::textParams()['required'];
+        $this->optionalParams = FormParams::textParams()['optional'];
         
         $this->incomingParams = $param;
         $this->checkIncomingParams();   
@@ -56,6 +56,8 @@ class Select
         $this->checkUnnecessaryParams();
         $this->checkRequiredParams();
         $this->checkOptionalParams();
+        
+        //var_dump($this);
     }
     
     /**
@@ -337,7 +339,8 @@ class Select
         
         // Всі параметри інпута:
         $input = [
-            'select',
+            'input',
+            'type="text"',
             'name="' . $this->incomingParams['name'] . '"',
             'id="' . $this->incomingParams['id'] . '"',
             'class="' . $this->incomingParams['class'] . '"',
@@ -348,36 +351,15 @@ class Select
         $this
             ->codeWriter
             ->lines([
-                '<!---- SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->',
+                '<!---- TEXT FIELD: ' . $this->incomingParams['name'] . ' ---->',
                 '<div class="' . FormParams::$formclasses['form-label'] . '">' . $this->incomingParams['label'] . '</div>',
                 '<div class="' . FormParams::$formclasses['form-content'] . '">',
             ])
             ->defaultSpaces(4)
             ->line('<'.implode($input, ' ').'>');
-            
-            $this->codeWriter->s(4);
-            
-            // Варіанти вибору:
-            foreach($this->incomingParams['values'] as $value => $text) {
-                
-                if($this->incomingParams['selected_value'] == $value) {
-                    $this->codeWriter->line(
-                        '<option value="' . $value . '" selected>' . $text . '</option>'
-                    );  
-                } else {
-                    $this->codeWriter->line(
-                        '<option value="' . $value . '">' . $text . '</option>'
-                    );  
-                }
-
-            }
-            
-            $this->codeWriter->s(0);
 
             $this
-            ->codeWriter->line(
-                '</select>'
-            )
+            ->codeWriter
             ->defaultSpaces(0)
             ->lines([
                 '</div>',
@@ -395,7 +377,7 @@ class Select
 
             $this
                 ->codeWriter
-                ->line('<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
+                ->line('<!---- /TEXT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
 
         return trim($this->codeWriter->getCode());
     }
@@ -420,7 +402,7 @@ class Select
         $this
             ->codeWriter
             ->lines([
-                '<!---- SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->',
+                '<!---- TEXT FIELD: ' . $this->incomingParams['name'] . ' ---->',
                 '<div class="' . FormParams::$formclasses['form-label'] . '">' . $this->incomingParams['label'] . '</div>',
                 '<div class="' . FormParams::$formclasses['form-content'] . '">',
             ])
@@ -428,13 +410,6 @@ class Select
             ->line('<'.implode($input, ' ').'>');
             
             $this->codeWriter->s(4);
-            
-            // Варіанти вибору:
-            foreach($this->incomingParams['values'] as $value => $text) {
-                $this->codeWriter->line(
-                    '<option value="' . $value . '" @if($object->' . $this->incomingParams['name'] . ' == "' . $value . '"){{""}}selected{{""}}@endif>' . $text . '</option>'
-                );  
-            }
             
             $this->codeWriter->s(0);
 
@@ -448,7 +423,7 @@ class Select
                 '<div class="' . FormParams::$formclasses['form-error'] . '">',
             ])
             ->s(4)
-            ->line('<small id="' . $this->incomingParams['name'] . '_js_error" class="form-text text-danger" style="display: none;"></small>')
+            ->line('<small id="form_type_js_error" class="form-text text-danger" style="display: none;"></small>')
             ->s(0)
             ->lines([
                 '</div>',
@@ -459,7 +434,7 @@ class Select
 
             $this
                 ->codeWriter
-                ->line('<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
+                ->line('<!---- /TEXT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
 
         return trim($this->codeWriter->getCode());
     }
@@ -480,13 +455,6 @@ class Select
                     '"values" => "['
                 ])
                 ->s(8);
-                
-        // Варіанти вибору:
-        foreach($this->incomingParams['values'] as $value => $text) {
-            $this
-                ->codeWriter         
-                    ->line('"' . $value . '" => "' . $text . '",');
-        }
         
         $this
             ->codeWriter   

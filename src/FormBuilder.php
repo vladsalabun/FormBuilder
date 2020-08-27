@@ -23,14 +23,26 @@ class FormBuilder
     
     public function __construct() 
 	{
-
 	}
     
+    /**
+     *  Дефолтні параметри усіх форм:
+     */
 	public static function all() 
 	{
         return new FormParams;
 	}
 
+    /**
+     *  Список задач для будівельника форм:
+     */
+	public static function todo() 
+	{
+        return [
+            'Яким способом генерувати old_value() та $errors для Laravel?'
+        ];
+	}
+    
     
     /**
      *  Генерація hidden:
@@ -38,6 +50,14 @@ class FormBuilder
 	public static function hidden($params = []) 
 	{
         // TODO
+	}
+    
+    /**
+     *  Генерація text:
+     */
+	public static function text($params = []) 
+	{
+        return (new Forms\Text($params))->toString();
 	}
     
     /**

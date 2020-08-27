@@ -79,6 +79,7 @@ class FormParams
             ],
             'optional' => [
                 "label" => "Select",
+                "placeholder" => "",
                 "class" => "form-control",
                 "required" => false
             ]
