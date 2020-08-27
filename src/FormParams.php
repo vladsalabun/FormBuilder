@@ -75,13 +75,18 @@ class FormParams
         [
             'required' => [
                 'name' => "name_" . rand(9999,99999),
+                'value' => "",
                 "id" => "id_" . rand(9999,99999),
+                "minlength" => 0,
+                "maxlength" => 255,
             ],
             'optional' => [
                 "label" => "Select",
                 "placeholder" => "",
                 "class" => "form-control",
-                "required" => false
+                "autocomplete" => 'off',
+                "required" => false,
+                "readonly" => false
             ]
         ];
     }
@@ -149,7 +154,7 @@ class FormParams
             "optional" => [
                 "label" => "Select",
                 "class" => "form-control",
-                "required" => false
+                "required" => false,
             ]
         ];
     }
