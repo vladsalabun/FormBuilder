@@ -407,14 +407,66 @@ class Select
         return trim($this->codeWriter->getCode());
     }
 
-   
+    /**
+     *  Генерація Laravel Blade коду для копіювання і вставки:
+     */   
     public function getBlade() 
 	{
         $this->codeWriter = new CodeWriter;
-
+        
+        // Всі параметри інпута:
+        $input = [
+            'select',
+            'name="' . $this->incomingParams['name'] . '"',
+            'id="' . $this->incomingParams['id'] . '"',
+            'class="' . $this->incomingParams['class'] . '"',
+            'default-selected-value="' . $this->incomingParams['selected_value'] . '"',
+            $this->incomingParams['required'] == true ? 'required' : ''
+        ];
+        
         $this
             ->codeWriter
-            ->line('blade select');
+            ->lines([
+                '<!---- SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->',
+                '<div class="' . FormParams::$formclasses['form-label'] . '">' . $this->incomingParams['label'] . '</div>',
+                '<div class="' . FormParams::$formclasses['form-content'] . '">',
+            ])
+            ->defaultSpaces(4)
+            ->line('<'.implode($input, ' ').'>');
+            
+            $this->codeWriter->s(4);
+            
+            // Варіанти вибору:
+            foreach($this->incomingParams['values'] as $value => $text) {
+                $this->codeWriter->line(
+                    '<option value="' . $value . '" @if($object->' . $this->incomingParams['name'] . ' == "' . $value . '"){{""}}selected{{""}}@endif>' . $text . '</option>'
+                );  
+            }
+            
+            $this->codeWriter->s(0);
+
+            $this
+            ->codeWriter->line(
+                '</select>'
+            )
+            ->defaultSpaces(0)
+            ->lines([
+                '</div>',
+                '<div class="' . FormParams::$formclasses['form-error'] . '">',
+            ])
+            ->s(4)
+            ->line('<small id="form_type_js_error" class="form-text text-danger" style="display: none;"></small>')
+            ->s(0)
+            ->lines([
+                '</div>',
+            ]);
+            
+            // Дебаг:
+            $this->debug();
+
+            $this
+                ->codeWriter
+                ->line('<!---- /SELECT FIELD: ' . $this->incomingParams['name'] . ' ---->');              
 
         return trim($this->codeWriter->getCode());
     }
@@ -425,8 +477,42 @@ class Select
 
         $this
             ->codeWriter
-            ->line('php select');
+            ->line('$param = [')
+                ->s(4)
+                ->lines([
+                    '"name" => "' . $this->incomingParams['name'] . '",',
+                    '"label" => "' . $this->incomingParams['label'] . '",',
+                    '"id" => "' . $this->incomingParams['id'] . '",',
+                    '"selected_value" => "' . $this->incomingParams['selected_value'] . '",',
+                    '"values" => "['
+                ])
+                ->s(8);
+                
+        // Варіанти вибору:
+        foreach($this->incomingParams['values'] as $value => $text) {
+            $this
+                ->codeWriter         
+                    ->line('"' . $value . '" => "' . $text . '",');
+        }
+        
+        $this
+            ->codeWriter   
+                ->s(4)            
+                ->lines([
+                    '],',
+                    '"class" => "' . $this->incomingParams['class'] . '",',
+                    '"required" => "' . $this->incomingParams['required'] . '",',
+                    '"debug" => "' . $this->incomingParams['debug'] . '",',
+                    '"creating_method" => "' . $this->incomingParams['creating_method'] . '",',
+                ])
+            ->s(0)
+            ->line('];')
+            ->br();
 
+        $this
+            ->codeWriter
+            ->line('echo FormBuilder::select($param);');     
+            
         return trim($this->codeWriter->getCode());
     }
     

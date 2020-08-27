@@ -58,12 +58,13 @@ class FormParams
         return 
         [
             'required' => [
-                'value',
-                'name',
-                'id',
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
             ],
             'optional' => [
-            
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
             ]
         ];
     }
@@ -73,29 +74,65 @@ class FormParams
         return 
         [
             'required' => [
-                'value',
-                'name',
-                'id',
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
             ],
             'optional' => [
-                'old_value',
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
             ]
         ];
     }
 
 	public static function numberParams() 
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
     
 	public static function textareaParams() 
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
 
 	public static function radioParams() 
 	{
-        return [];
+        return 
+        [
+            "required" => [
+                "name" => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+                "selected_value" => null,
+                "values" => [],
+            ],
+            "optional" => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
 
 	public static function selectParams() 
@@ -118,42 +155,130 @@ class FormParams
     
 	public static function checkboxParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
     
 	public static function youtube_videoParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     } 
         
 	public static function datepickerParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     } 
     
 	public static function tempus_datetimepickerParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
     
 	public static function fileParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
     
 	public static function filesParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }
             
 	public static function imageParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }  
        
 	public static function imagesParams()
 	{
-        return [];
+        return 
+        [
+            'required' => [
+                'name' => "name_" . rand(9999,99999),
+                "id" => "id_" . rand(9999,99999),
+            ],
+            'optional' => [
+                "label" => "Select",
+                "class" => "form-control",
+                "required" => false
+            ]
+        ];
     }    
     
     
