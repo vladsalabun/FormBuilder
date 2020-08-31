@@ -25,20 +25,20 @@ class FormParams
          */
         $this->formTypes = 
         [
-            'hidden' => FormParams::hiddenParams(),
-            'text' => FormParams::textParams(),
-            'number' => FormParams::numberParams(),
-            'textarea' => FormParams::textareaParams(),
-            'radio' => FormParams::radioParams(),
+            'hidden' => FormParams::hiddenParams(), // заготовка
+            'text' => FormParams::textParams(), // ГОТОВО!
+            'number' => FormParams::numberParams(), // заготовка
+            'textarea' => FormParams::textareaParams(), // 
+            'radio' => FormParams::radioParams(), //
             'select' => FormParams::selectParams(), // ГОТОВО!
-            'checkbox' => FormParams::checkboxParams(),
-            'youtube_video' => FormParams::youtube_videoParams(),
-            'datepicker' => FormParams::datepickerParams(),
-            'tempus_datetimepicker' => FormParams::tempus_datetimepickerParams(),
-            'file' => FormParams::fileParams(),
-            'files' => FormParams::filesParams(),
-            'image' => FormParams::imageParams(),
-            'images' => FormParams::imagesParams(),
+            'checkbox' => FormParams::checkboxParams(), //
+            'youtube_video' => FormParams::youtube_videoParams(), //
+            'datepicker' => FormParams::datepickerParams(), //
+            'tempus_datetimepicker' => FormParams::tempus_datetimepickerParams(), //
+            'file' => FormParams::fileParams(), //
+            'files' => FormParams::filesParams(), //
+            'image' => FormParams::imageParams(), //
+            'images' => FormParams::imagesParams(), //
         ];
         
         // TODO: виписати унікальні назви параметрів та їхніх дефолтних значень, та створити для них поля в таблиці генератора

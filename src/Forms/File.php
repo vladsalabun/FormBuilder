@@ -8,9 +8,9 @@ use Salabun\FormBuilder;
 use Salabun\FormBuilderErrors;
 
 /**
- *  Hidden:
+ *  File:
  */
-class Hidden extends FormInterface
+class File extends FormInterface
 {      
 
     /**
@@ -19,8 +19,8 @@ class Hidden extends FormInterface
     public function __construct($param = []) 
 	{
         // Дізнаюсь дефолтні параметри:
-        $this->requiredParams = FormParams::hiddenParams()['required'];
-        $this->optionalParams = FormParams::hiddenParams()['optional'];
+        $this->requiredParams = FormParams::fileParams()['required'];
+        $this->optionalParams = FormParams::fileParams()['optional'];
         
         $this->incomingParams = $param;
         $this->checkIncomingParams();   
@@ -40,13 +40,13 @@ class Hidden extends FormInterface
      */   
     public function getBlade() 
 	{
-        $this->codeWriter = new CodeWriter;         
+        $this->codeWriter = new CodeWriter;
         return trim($this->codeWriter->getCode());
     }
     
     public function getPHP() 
 	{
-        $this->codeWriter = new CodeWriter;  
+        $this->codeWriter = new CodeWriter;
         return trim($this->codeWriter->getCode());
     }
 
