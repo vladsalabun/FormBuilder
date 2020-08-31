@@ -40,8 +40,7 @@ class Select extends FormInterface
             'id="' . $this->incomingParams['id'] . '"',
             'class="' . $this->incomingParams['class'] . '"',
             'default-selected-value="' . $this->incomingParams['selected_value'] . '"',
-            $this->incomingParams['required'] == true ? 'required' : '',
-            $this->incomingParams['readonly'] == true ? 'readonly' : ''
+            $this->incomingParams['required'] == true ? 'required' : ''
         ];
         
         $this

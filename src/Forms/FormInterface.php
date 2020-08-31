@@ -282,7 +282,7 @@ class FormInterface
      */
     public function minlength($value) 
 	{        
-        if(is_int($value) and $value >= 0) {
+        if(is_numeric($value) and $value >= 0) {
             return ceil($value);
         } else {
             $this->errors[109][] = FormBuilderErrors::error(109);
@@ -295,7 +295,7 @@ class FormInterface
      */
     public function maxlength($value) 
 	{        
-        if(is_int($value) and $value > 0) {
+        if(is_numeric($value) and $value > 0) {
             return ceil($value);
         } else {
             $this->errors[110][] = FormBuilderErrors::error(110);
